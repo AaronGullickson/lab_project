@@ -1,8 +1,10 @@
 ## Introduction
 
-The rest of the lab assignments for term are going to work towards the goal of doing a full statistical analysis. We will use the same git repository for each component of this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
+The rest of the lab assignments for the term are going to work towards doing a full statistical analysis. We will use the same git repository for each component of this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
 
 ### Background
+
+For this project, we are going to look at two theories about how the macro-level demographic context of a city might affect the level of racial inequality in that city.
 
 Blalock (1967) argued that as the size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. Blalock's theory has been tested in many different ways. Most commonly, scholars look at the association between the relative size of a minority population and the level of racial inequality in an area (e.g. city, state). Numerous studies using this approach have shown that racial inequality between blacks and whites is higher in areas with a relatively larger black population (Beggs 1997; Blalock 1957; Burr et. al. 1991; Cohen 1998; Frisbie and Neidert 1977;  McCall 2001; Tienda and Lii 1987; Tomaskovic-Devey and Roscigno 1996).
 
@@ -10,15 +12,15 @@ On the other hand, Massey and Denton (1993) have argued that racial segregation 
 
 ### Our Project
 
-We are going to test out Blalock's theory by looking at the association between percent black in a state and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in a state. To test Massey and Denton's theory, we will also examine the association between the black/white dissimilarity index (a measure of segregation) and this difference in SEI. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
+We are going to test out Blalock's theory by looking at the association between percent black in a city and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in a city. To test Massey and Denton's theory, we will also examine the association between the black/white dissimilarity index (a measure of segregation) and this same racial difference in SEI. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
 
-Its important to acknowledge up front that states are a pretty blocky unit for measuring these kinds of processes but for simplicity of an initial data analysis project, it is the unit that we will use.
+#### Data Sources
 
 For data, we will use the 2015 American Community Survey (ACS). The ACS is an annual 1% survey of the American population conducted by the US Census Bureau that collects a variety of demographic information. We will be downloading the ACS extract that we want from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. The IPUMS is a great resource. The staff at IPUMS have compiled microdata samples of each US Census going back to 1850, as well as the recent ACS samples. They have cleaned these files and constructed a variety of variables that are consistently coded across multiple years of the Census in order to allow easier historical comparison. They also have full count data of some historical census data, and they have an international section where they are compiling data on census data from a variety of other countries.
 
 We will also use aggregate census tract data to create some additional state-level measures and the dissimilarity index. This data is already provided in the repository
 
-### Overall Plan
+#### Overall Plan
 
 We will develop this project over multiple exercises. Here is an overview of the individual assignments that we will complete for the project:
 
@@ -58,11 +60,9 @@ Here are the steps you should follow to define your own extract:
 
 5. Once you have all the variables that you need, select "View Cart" in upper right. Review your selections and then hit "Create Data Extract." On the next screen, you can write a description of your extract, and then hit "Submit Extract."
 
-6. You will now be sent to a screen with all of your previous and pending extracts. You can also get to this page from the main page by hitting the "[Download or Revise Extract](https://usa.ipums.org/usa-action/extract_requests/download)" link. Your fixed-width data will not be immediately available. However, you will have access to some documentation, including some scripts in other software programs for reading in the data. You should save the basic codebook. This codebook will provide important information on the structure and coding of the data.
+6. You will now be sent to a screen with all of your previous and pending extracts. You can also get to this page from the main page by hitting the "[Download or Revise Extract](https://usa.ipums.org/usa-action/extract_requests/download)" link. Your fixed-width data will not be immediately available. However, you will have access to some documentation, including some scripts in other software programs for reading in the data. You should save the basic codebook (its a plain text file). This codebook will provide important information on the structure and coding of the data. I would recommend saving it to your `input` directory so you have access to it from within RStudio.
 
-7. You will get an email when you data extract is ready. You can then go to the download page and download it. The data will download with the extension .gz. This is a g-zipped file. It should be unzippable in OSX just by double-clicking it. Windows users may have to download a decent unzipping program like [7-zip](http://www.7-zip.org/).
-
-8. Once you have it unzipped, you will have a *.dat file that is just a raw ASCII text file with fixed-width data. You should put this file into the input directory of your cloned repository (you did clone this repository, didn't you?).
+7. You will get an email when you data extract is ready. You can then go to the download page and download it. The data will download with the extension .gz. This is a g-zipped file. Because R can read in gzipped files directly, we won't bother to unzip it. You should put this file into the input directory of your cloned repository (you did clone this repository, didn't you?).
 
 One nice feature of the IPUMS site, is that you can revise extracts on the download page. If you screw something up on your first try (probable), rather than starting from scratch, you can choose to revise an extract and just remove or add the variables and or samples you forgot.
 
@@ -72,11 +72,14 @@ You will need to write code in the `read_raw_data.R` script that reads in the fi
 
 The codebook should provide you with the information you need to determine the widths necessary for the `read.fwf` command. Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in case of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
 
+The IPUMS data file has no headers, so you will need to assign variable names using the `colnames` function after reading in the data (by default, it will give you variable names like "V1"). Once you are satisfied with the dataset, save it as a CSV file with the name `ipums_data.csv` in the `output` directory. For future exercises, it will be quicker to read in the CSV file with proper column names than to repeat this procedure.
+
 ## Cleaning Data Assignment
 
-You will write a script in either R or Stata that cleans and organizes this data for our later analysis. First, you will assign missing values to all variables. Second, you will create the following new variables in the dataset:
+For this assignment, you will take the raw IPUMS data produced in the last assignment and clean it up. The data will need to be subset, variables will need to be recoded and missing values assigned. You will need the codebook provided by IPUMS in order to properly do this assignment. Here are the steps you need to follow to clean your data. All of the code for this exercise should go in the `organize_data.R` script under the "Clean data" heading.
 
-- A categorical variable called `racecombo` that combines the `race` and `hispan` variables to create the following categories:
+1. Code the following new variables. Be sure to properly assign missing values if the values on any of the original variables used to construct the new variable are missing. You should also include diagnostic code that checks to make sure that your re-coding was done correctly.
+    A) A factor variable called `racecombo` that combines the `race` and `hispan` variables to create the following categories:
     - Non-Hispanic White
     - Non-Hispanic Black
     - non-Hispanic Asian or Pacific Islander
@@ -84,29 +87,32 @@ You will write a script in either R or Stata that cleans and organizes this data
     - non-Hispanic Other
     - non-Hispanic Multiple race
     - Hispanic
-- A categorical variable for regions named `bigregion` with the following collapsed categories based on `region`:
+
+    B) A factor variable for regions named `bigregion` with the following collapsed categories based on `region`:
     - Northeast: New England+Middle Atlantic+Delaware
     - South: South Atlantic (except Delaware) + East South Central + West South Central
     - Midwest: East North Central + West North Central
     - West: Mountain + Pacific
-- A dichotomous categorical variable called `birthplace` with the categories:
+
+    C) A dichotomous factor variable called `birthplace` with the categories:
     - Foreign-born
     - Native-born
-- A dichotomous categorical variable named `college` with the categories:
+
+    D) A dichotomous categorical variable named `college` with the categories:
     - Four year college degree or more
     - less than a four year college degree
 
-When working with the data, you will likely find the [IPUMS documentation](https://usa.ipums.org/usa-action/variables/group) on variable codes to be helpful.
+2. Assign missing values to SEI for any observation with a value of zero.
 
-Once variables are coded, you should code some diagnostic tools to check and make sure the code did what you intended it to do (e.g. crosstabs, summaries, figures). Finally, you should output your re-coded data as a CSV file.
+3. Subset the data according to the following criteria:
+  A) Only keep individuals who are currently living in a US State (do not include DC or Puerto Rico).
+  B) Remove all variables except the state fips code, the SEI measure, and all of the new variables constructed above.
 
-Once complete, upload your final R script or Stata do-file here.
+Once you are satisfied with your code you can commit and tag your assignment. There is no need to save the data as we will continue working with the `organize_data.R` script in the next assignment.
 
 ## Combining and Merging Data Assignment
 
-We are going to continue working with the data that we cleaned last week. Everyone should download my version of the cleaned data so that we are all working from the same base.^[You can also see my do-file for creating this cleaned up dataset here.] Be sure to use the option `na.strings=NA` in your `read.csv` command to read in missing values properly.
-
-This week we are going to aggregate this data to the state level so that our units of analysis are individual states rather than individual respondents and we are going to merge this state aggregated data with some other data from the 2012 Economic Census of the US on the relative frequency of different types of industry at the state level.
+For we are going to aggregate this data to the state level so that our units of analysis are individual states rather than individual respondents and we are going to merge this state aggregated data with some other data from the 2012 Economic Census of the US on the relative frequency of different types of industry at the state level.
 
 1. The first step is to create the state aggregated data from the individual level data. You should be able to use the `tapply` command with the `fips` variable as the second command to produce vectors of the aggregated data listed below. For some of these you will have to think creatively about the most efficient way to get the aggregated data. Remember that boolean statements and `tapply` are your friend.
 - The percent of each state's population that is non-Hispanic black, named `pctblack`.

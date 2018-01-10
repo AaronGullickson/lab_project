@@ -9,7 +9,7 @@
 #read in the CSV file created from read_raw_data.R
 ipums <- read.csv("output/ipums_data.csv")
 
-# Recode variables --------------------------------------------------------
+# Clean data --------------------------------------------------------------
 
 
 
