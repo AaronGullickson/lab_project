@@ -6,6 +6,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+met_area <- read.csv("output/met_area.csv")
 ```
 
 ## Introduction
@@ -24,6 +25,13 @@ Show how the key independent and dependent variables are distributed. Use graphi
 
 ```{r figuretemplate, echo=FALSE, fig.cap="A Caption"}
 #code (e.g. plot, hist, barplot, boxplot) to produce the figure
+```
+
+```{r regression_template, echo=FALSE, results='asis'}
+#obviously these are not the models you want
+
+
+
 ```
 
 ## Conclusions

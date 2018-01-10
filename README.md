@@ -6,31 +6,29 @@ The rest of the lab assignments for the term are going to work towards doing a f
 
 For this project, we are going to look at two theories about how the macro-level demographic context of a city might affect the level of racial inequality in that city.
 
-Blalock (1967) argued that as the size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. Blalock's theory has been tested in many different ways. Most commonly, scholars look at the association between the relative size of a minority population and the level of racial inequality in an area (e.g. city, state). Numerous studies using this approach have shown that racial inequality between blacks and whites is higher in areas with a relatively larger black population (Beggs 1997; Blalock 1957; Burr et. al. 1991; Cohen 1998; Frisbie and Neidert 1977;  McCall 2001; Tienda and Lii 1987; Tomaskovic-Devey and Roscigno 1996).
-
-On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources.
+Blalock (1967) argued that as the relative size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources.
 
 ### Our Project
 
-We are going to test out Blalock's theory by looking at the association between percent black in a city and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in a city. To test Massey and Denton's theory, we will also examine the association between the black/white dissimilarity index (a measure of segregation) and this same racial difference in SEI. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
+We are going to test out Blalock's theory by looking at the association between percent black in a city and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in that city. To test Massey and Denton's theory, we will also examine the association between the black/white dissimilarity index (a measure of segregation) and this same racial difference in SEI. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
 
 #### Data Sources
 
-For data, we will use the 2015 American Community Survey (ACS). The ACS is an annual 1% survey of the American population conducted by the US Census Bureau that collects a variety of demographic information. We will be downloading the ACS extract that we want from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. The IPUMS is a great resource. The staff at IPUMS have compiled microdata samples of each US Census going back to 1850, as well as the recent ACS samples. They have cleaned these files and constructed a variety of variables that are consistently coded across multiple years of the Census in order to allow easier historical comparison. They also have full count data of some historical census data, and they have an international section where they are compiling data on census data from a variety of other countries.
+We will use two primary data sources to construct our analytical dataset. first, we will use [Social Explorer](https://socialexplorer.com) to download census tract data for the entire US based on American Community Survey (ACS) data from 2012-2016. The ACS is an annual 1% survey of the American population conducted by the US Census Bureau that collects a variety of demographic information. Ultimately, we want data at the level of metropolitan statistical areas (i.e. cities). However, we need data at the tract level within cities in order to calculate the dissimilarity index of segregation. Therefore we will just download tract data and ultimately aggregate this up to the level of metropolitan areas.
 
-We will also use aggregate census tract data to create some additional state-level measures and the dissimilarity index. This data is already provided in the repository
+Unfortunately, the census bureau does not publish aggregate data that will give us the mean difference in SEI between whites and blacks in a metropolitan area. In order to get this number, we will need to download the individual-level ACS data from 2014 and calculate the difference ourselves. We will be downloading the ACS extract from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. Unfortunately, for reasons of confidentiality the metropolitan area of respondents is only available in larger metropolitan areas, so our analysis will be limited to the largest 150-200 cities in the US.
 
 #### Overall Plan
 
 We will develop this project over multiple exercises. Here is an overview of the individual assignments that we will complete for the project:
 
-1. Create a data extract from IPUMS, download, and read it in to R.
-2. Recode the individual-level IPUMS data to get the necessary variables and subsets.
-3. Aggregate individual-level and tract data to the state level and merge.
-4. Calculate the dissimilarity index for each state and merge this into the state data from (3).
-5. Conduct the analysis on the full state level data, and write up a report of your analysis in R Markdown with tables and figures.
+1. Create the necessary data extracts from Social Explorer and IPUMS and read this data into R.
+2. Clean, recode, and aggregate the data up to the metro-level area.
+3. Merge the dataset from social explorer with the dataset from IPUMS.
+4. Calculate the dissimilarity index for each metro area and merge this into the data from (3). We now have a final analytical dataset.
+5. Conduct the analysis on the analytical dataset, and write up a report of your analysis in R Markdown with tables and figures.
 
-Further instructions for each of these assignments are detailed below.
+Further instructions for each of these assignments are provided below.
 
 #### Tagging Releases for Assignment Completion
 
@@ -40,7 +38,9 @@ In GitHub you can easily add a tag by creating a "release." in the Code tab, cli
 
 ## Reading and Writing Data Assignment
 
-For the first assignment, you will need to create a data extract from the IPUMS website and then write R code that will read this data extract into R.
+For the first assignment, you will need to create a data extract from the Social Explorer dataset and the  IPUMS website and then write R code that will read these data extracts into R.
+
+### Download Social Explorer Data
 
 ### Download IPUMS Data
 
@@ -53,9 +53,8 @@ Here are the steps you should follow to define your own extract:
 3. Choose "Select Samples". Uncheck the "Default sample from each year" to de-select all samples and then choose the 2015 ACS. Click "Submit Sample Selection" at the bottom.
 
 4. IPUMS will include several technical variables automatically. The remaining variables can be browsed and selected by clicking on the "+" button. Here are the variables that we will need:
-   * In Household > Geographic > STATEFIP, REGION
-   * In Person > Race, Ethnicity, and Nativity > RACE, HISPAN, and BPL
-   * In Person > Education > EDUC
+   * In Household > Geographic > MET2013
+   * In Person > Race, Ethnicity, and Nativity > RACE and HISPAN
    * In Person > Occupational Standing > SEI
 
 5. Once you have all the variables that you need, select "View Cart" in upper right. Review your selections and then hit "Create Data Extract." On the next screen, you can write a description of your extract, and then hit "Submit Extract."
@@ -68,11 +67,39 @@ One nice feature of the IPUMS site, is that you can revise extracts on the downl
 
 ### Read in the Raw Data
 
-You will need to write code in the `read_raw_data.R` script that reads in the fixed-width data you just downloaded. This code should go under the "Read in raw data" section heading.
+You will need to write code in the `read_raw_data.R` script that reads in the fixed-width datasets you just downloaded. There is a section each for the IPUMS and tract data.
 
-The codebook should provide you with the information you need to determine the widths necessary for the `read.fwf` command. Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in case of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
+#### Reading in the IPUMS Data
 
-The IPUMS data file has no headers, so you will need to assign variable names using the `colnames` function after reading in the data (by default, it will give you variable names like "V1"). Once you are satisfied with the dataset, save it as a CSV file with the name `ipums_data.csv` in the `output` directory. For future exercises, it will be quicker to read in the CSV file with proper column names than to repeat this procedure.
+The IPUMS data is in fixed-width format. The codebook should provide you with the information you need to determine the widths necessary for the `read.fwf` command. Also, because the data is g-zipped, you will want to access it with the `gzfile("input/name_of_data.dat.gz", open="r")` command. Fixed-width data can be slow to read in. On my laptop, this data took about five minutes to read. YRMV.
+
+Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in cases of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
+
+Be sure that all of your variables have good variable names. Furthermore, to shrink our dataset a little bit, I would like you to subset it so that only cases with a valid MET2013 and SEI (i.e. non-zero value) are kept. Once you are satisfied with your dataset, save it to the `output` directory as a CSV file with the name `ipums_data.csv`.
+
+#### Reading in the Tract Data
+
+The tract data is in CSV format so it should be easier to load into R. Keep in mind that if you did as I suggested above and added labels in the first row of the CSV, you will need to skip a row when you read in the CSV.
+
+After you have read in the tract data, I would like you to run the code that is already present in the script to assign metropolitan area ids to each tract. These will not be provided in the data from social explorer, but can be determined by cross-referencing state and county ids with metropolitan statistical area ids, which is what this code does. You should then remove any tracts with a missing value on met2013 id, because these tracts do not belong to metropolitan statistical areas.
+
+The annoying thing about the social explorer data is the non-intuitive nature of the variable names. There are also a lot of variables that we do not need. I would like you to keep only the following variables and to rename them to something more intuitive.
+
+- `met2013` - keep this name as we will use it to merge datasets later.
+- `met_name` - keep this name
+- `SE_T014_001` - total population in the tract
+- `SE_T014_003` - total population of non-Hispanic whites
+- `SE_T014_004` - total population of non-Hispanic blacks
+- `SE_T025_001` - total population over the age of 25. This is used as the denominator for the educational categories that follow
+- `SE_T025_005` - total population over the age of 25 with bachelor's degree.
+- `SE_T025_006` - total population over the age of 25 with master's degree.
+- `SE_T025_007` - total population over the age of 25 with professional degree.
+- `SE_T025_008` - total population over the age of 25 with doctoral degree.
+- `SE_T037_001` - total labor force population
+- `SE_T037_003` - total number of persons unemployed
+- `SE_T133_033` - total number of persons foreign-born
+
+Once you are satisfied with the tract-level data, save it as a CSV file in the `output` directory with the name "tract_data.csv".
 
 ## Cleaning Data Assignment
 
@@ -173,22 +200,6 @@ When completed, you can upload your R Markdown (*.Rmd) file here.
 
 ## References
 
-Beggs, John J, Wayne J Villemez, and Ruth Arnold. 1997. “Black Population Concentration and Black-White Inequality: Expanding the Consideration of Place and Space Effects.” *Social Forces* 76(1):65–91.
-
 Blalock, Hubert M. 1967. *Toward a Theory of Minority-Group Relations.* New York: John Wiley and Sons.
 
-Blalock Jr, H M. 1957. “Per Cent Non-White and Discrimination in the South.” *American Sociological Review* 22(6):677–82.
-
-Burr, Jeffrey A, Omer R Galle, and Mark A Fossett. 1991. “Racial Occupational Inequality in Southern Metropolitan Areas, 1940-1980: Revisiting the Visibility-Discrimination Hypothesis.” *Social Forces* 69(3):831–50.
-
-Cohen, Philip N. 1998. “Black Concentration Effects on Black-White and Gender Inequality: Multilevel Analysis for Metropolitan Areas.” *Social Forces* 77(1):207–29.
-
-Frisbie, W Parker, and Lisa Neidert. 1977. “Inequality and the Relative Size of Minority Populations: A Comparative Analysis.”  *American Journal of Sociology* 82(5):1007–30.
-
 Massey, Douglas S. and Nancy A. Denton. 1993. *American Apartheid: Segregation and the Making of the Underclass.* Cambridge: Harvard University Press.
-
-McCall, Leslie. 2001. “Sources of Racial Wage Inequality in Metropolitan Labor Markets: Racial, Ethnic, and Gender Differences.” *American Sociological Review* 66(4):520–41.
-
-Tienda, Marta, and Ding-Tzann Lii. 1987. “Minority Concentration and Earnings Inequality: Blacks, Hispanics, and Asians Compared.” *American Journal of Sociology* 93(1):141–65.
-
-Tomaskovic-Devey, Donald, and Vincent J Roscigno. 1996. “Racial Economic Subordination and White Gain in the U.S. South.” *American Sociological Review* 61(4):565–89.
