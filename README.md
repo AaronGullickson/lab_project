@@ -1,39 +1,54 @@
 ## Introduction
 
-The rest of the lab assignments for term are going to work towards the goal of doing a full statistical analysis. We will use the same git repository for this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
+The rest of the lab assignments for term are going to work towards the goal of doing a full statistical analysis. We will use the same git repository for each component of this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
 
 ### Background
 
-We are going to test Blalock's racial threat theory [@blalock_toward_1967]. Blalock argued that as the size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. Blalock's theory has been tested in many different ways. Most commonly, scholars look at the association between the relative size of a minority population and the level of racial inequality in an area (e.g. city, state). Numerous studies using this approach have shown that racial inequality between blacks and whites is higher in areas with a relatively larger black population [@blalock_jr_per_1957; @frisbie_inequality_1977; @tienda_minority_1987, @burr_racial_1991; @tomaskovic-devey_racial_1996; @beggs_black_1997; @cohen_black_1998; @mccall_sources_2001].
+Blalock (1967) argued that as the size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. Blalock's theory has been tested in many different ways. Most commonly, scholars look at the association between the relative size of a minority population and the level of racial inequality in an area (e.g. city, state). Numerous studies using this approach have shown that racial inequality between blacks and whites is higher in areas with a relatively larger black population (Beggs 1997; Blalock 1957; Burr et. al. 1991; Cohen 1998; Frisbie and Neidert 1977;  McCall 2001; Tienda and Lii 1987; Tomaskovic-Devey and Roscigno 1996).
+
+On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources.
 
 ### Our Project
 
-We are going to test out Blalock's theory by looking at the association between percent black by state and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in a state. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
+We are going to test out Blalock's theory by looking at the association between percent black in a state and the difference in [Duncan's Socioeconomic Index](https://usa.ipums.org/usa-action/variables/SEI#description_section) (SEI) between whites and blacks in a state. To test Massey and Denton's theory, we will also examine the association between the black/white dissimilarity index (a measure of segregation) and this difference in SEI. SEI is a composite measure that assigns a score to a person's occupation based on a combination of the average income earned in that occupation and the average education of individuals who hold that occupation. It is the most well-known measure in a family of occupational scoring techniques common to stratification research, although there is [considerable debate](https://usa.ipums.org/usa/chapter4/sei_note.shtml) on their usefulness.
+
+Its important to acknowledge up front that states are a pretty blocky unit for measuring these kinds of processes but for simplicity of an initial data analysis project, it is the unit that we will use.
 
 For data, we will use the 2015 American Community Survey (ACS). The ACS is an annual 1% survey of the American population conducted by the US Census Bureau that collects a variety of demographic information. We will be downloading the ACS extract that we want from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. The IPUMS is a great resource. The staff at IPUMS have compiled microdata samples of each US Census going back to 1850, as well as the recent ACS samples. They have cleaned these files and constructed a variety of variables that are consistently coded across multiple years of the Census in order to allow easier historical comparison. They also have full count data of some historical census data, and they have an international section where they are compiling data on census data from a variety of other countries.
 
-We will also use some data from the 2012 Economic Census of the US. This data is already provided in the repository.
+We will also use aggregate census tract data to create some additional state-level measures and the dissimilarity index. This data is already provided in the repository
 
 ### Overall Plan
 
 We will develop this project over multiple exercises. Here is an overview of the individual assignments that we will complete for the project:
 
+1. Create a data extract from IPUMS, download, and read it in to R.
+2. Recode the individual-level IPUMS data to get the necessary variables and subsets.
+3. Aggregate individual-level and tract data to the state level and merge.
+4. Calculate the dissimilarity index for each state and merge this into the state data from (3).
+5. Conduct the analysis on the full state level data, and write up a report of your analysis in R Markdown with tables and figures.
+
+Further instructions for each of these assignments are detailed below.
 
 #### Tagging Releases for Assignment Completion
 
-### Directory Structure
+As you complete each assignment, you will indicate that you have completed it by "tagging" that commit. In git, you can tag any commit to keep track of important commits during the process.
+
+In GitHub you can easily add a tag by creating a "release." in the Code tab, click on the "releases" link at the top, and then choose the button "create a new release." For the tag version, write "labX" where X is replaced by the number above (1 for the first assignment, 2 for the second and so on) and the name of the assignment is given as the title (e.g. "Reading and Writing Data Assignment"). I will then be able to tell that you have completed the assignment. If I see any issues with your code, I will correct those issues and make a new commit, so that your code is ready to go for the next assignment.
 
 ## Reading and Writing Data Assignment
 
+For the first assignment, you will need to create a data extract from the IPUMS website and then write R code that will read this data extract into R.
+
 ### Download IPUMS Data
 
-In order for everyone to become familiar with using online sources for data, I want you to try to download the data that we will use for our analysis, even though we all want the exact same datat set. Here are the steps you should follow to define your own extract:
+Here are the steps you should follow to define your own extract:
 
 1. Register on the [IPUMS website](https://uma.pop.umn.edu/usa/user/new?return_url=https%3A%2F%2Fusa.ipums.org%2Fusa-action%2Fmenu). Remember to use it for Good and never for Evil!
 
 2. From The [IPUMS-USA main page](https://usa.ipums.org/usa/), go to "[Browse and Select Data](https://usa.ipums.org/usa-action/variables/group)."
 
-3. Choose "Select Samples". Hit the "Default sample from each year" to de-select all samples and then choose the 2015 ACS. Click "Submit Sample Selection" at the bottom.
+3. Choose "Select Samples". Uncheck the "Default sample from each year" to de-select all samples and then choose the 2015 ACS. Click "Submit Sample Selection" at the bottom.
 
 4. IPUMS will include several technical variables automatically. The remaining variables can be browsed and selected by clicking on the "+" button. Here are the variables that we will need:
    * In Household > Geographic > STATEFIP, REGION
@@ -43,25 +58,21 @@ In order for everyone to become familiar with using online sources for data, I w
 
 5. Once you have all the variables that you need, select "View Cart" in upper right. Review your selections and then hit "Create Data Extract." On the next screen, you can write a description of your extract, and then hit "Submit Extract."
 
-6. You will now be sent to a screen with all of your previous and pending extracts. You can also get to this page from the main page by hitting the "[Download or Revise Extract](https://usa.ipums.org/usa-action/extract_requests/download)" link. Your fixed-width data will not be immediately available. However, you will have access to a Stata do-file that you can run once your have your data in order to load it into Stata. You should either save this do-file to your computer (using the "Save page as" option on your browser to save it as a do-file) or copy and paste its contents into an empty do-file editor.
+6. You will now be sent to a screen with all of your previous and pending extracts. You can also get to this page from the main page by hitting the "[Download or Revise Extract](https://usa.ipums.org/usa-action/extract_requests/download)" link. Your fixed-width data will not be immediately available. However, you will have access to some documentation, including some scripts in other software programs for reading in the data. You should save the basic codebook. This codebook will provide important information on the structure and coding of the data.
 
-7. You will get an email when you data extract is ready. You can then go to the download page and download it. The data will download with the extention .gz. This is a g-zipped file. It should be unzippable in OSX just by double-clicking it. Windows users may have to download a decent unzipping program like [7-zip](http://www.7-zip.org/).
+7. You will get an email when you data extract is ready. You can then go to the download page and download it. The data will download with the extension .gz. This is a g-zipped file. It should be unzippable in OSX just by double-clicking it. Windows users may have to download a decent unzipping program like [7-zip](http://www.7-zip.org/).
 
-8. Once you have it unzipped, you should be the final .dat file in the same directory as the do-file you downloaded earlier. You can now load the data into Stata by simply running that do-file from within Stata.
+8. Once you have it unzipped, you will have a *.dat file that is just a raw ASCII text file with fixed-width data. You should put this file into the input directory of your cloned repository (you did clone this repository, didn't you?).
 
-9. One nice feature of the IPUMS site, is that you can revise extracts on the download page. If you screw something up on your first try (probable), rather than starting from scratch, you can choose to revise an extract and just remove or add the variables and or samples you forgot.
+One nice feature of the IPUMS site, is that you can revise extracts on the download page. If you screw something up on your first try (probable), rather than starting from scratch, you can choose to revise an extract and just remove or add the variables and or samples you forgot.
 
-Our goal in this exercise is to get this data loaded into R and Stata. You should follow the steps listed below. Unlike our previous exercises, you will not have to turn in a script, but you should keep one for later use.
+### Read in the Raw Data
 
-1. Load the data into Stata using the do-file from the IPUMS download page. Use the `outsheet` and `save` commands to save the data as a CSV file and a binary file, respectively. Be sure to use the `comma` option with outsheet.
-2. Load the data into R using three different techniques. After loading the data using each technique, run a `summary` command on the full dataset.
-    a. Load the data from the original fixed-width data file (.dat) using `read.fwf`. You can figure out the width of each variable by looking at the indices from the Stata do-file or the codebook on the IPUMS download page. WARNING: this technique will be slow.
-    b. Load the data from the CSV file you created in Step 1, using `read.csv`.
-    c. Load the data from the binary Stata data file (.dta) you created in Step 1, using `read.dta13` from the `readstata13` library. Remember that you will need to install that library using the command `install.packages("readstata13")`.
+You will need to write code in the `read_raw_data.R` script that reads in the fixed-width data you just downloaded. This code should go under the "Read in raw data" section heading.
+
+The codebook should provide you with the information you need to determine the widths necessary for the `read.fwf` command. Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in case of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
 
 ## Cleaning Data Assignment
-
-We are going to continue working with the data that we downloaded last week. To ensure that we are all working with the same base data, please download my version of this data in Stata 14 DTA format. You can use the `read.dta13` command in the `readstata13` library to read it into R or the `use` command to read it into Stata.
 
 You will write a script in either R or Stata that cleans and organizes this data for our later analysis. First, you will assign missing values to all variables. Second, you will create the following new variables in the dataset:
 
@@ -155,3 +166,23 @@ You can use the provided R Markdown Template file to get started. This file will
 When completed, you can upload your R Markdown (*.Rmd) file here.
 
 ## References
+
+Beggs, John J, Wayne J Villemez, and Ruth Arnold. 1997. “Black Population Concentration and Black-White Inequality: Expanding the Consideration of Place and Space Effects.” *Social Forces* 76(1):65–91.
+
+Blalock, Hubert M. 1967. *Toward a Theory of Minority-Group Relations.* New York: John Wiley and Sons.
+
+Blalock Jr, H M. 1957. “Per Cent Non-White and Discrimination in the South.” *American Sociological Review* 22(6):677–82.
+
+Burr, Jeffrey A, Omer R Galle, and Mark A Fossett. 1991. “Racial Occupational Inequality in Southern Metropolitan Areas, 1940-1980: Revisiting the Visibility-Discrimination Hypothesis.” *Social Forces* 69(3):831–50.
+
+Cohen, Philip N. 1998. “Black Concentration Effects on Black-White and Gender Inequality: Multilevel Analysis for Metropolitan Areas.” *Social Forces* 77(1):207–29.
+
+Frisbie, W Parker, and Lisa Neidert. 1977. “Inequality and the Relative Size of Minority Populations: A Comparative Analysis.”  *American Journal of Sociology* 82(5):1007–30.
+
+Massey, Douglas S. and Nancy A. Denton. 1993. *American Apartheid: Segregation and the Making of the Underclass.* Cambridge: Harvard University Press.
+
+McCall, Leslie. 2001. “Sources of Racial Wage Inequality in Metropolitan Labor Markets: Racial, Ethnic, and Gender Differences.” *American Sociological Review* 66(4):520–41.
+
+Tienda, Marta, and Ding-Tzann Lii. 1987. “Minority Concentration and Earnings Inequality: Blacks, Hispanics, and Asians Compared.” *American Journal of Sociology* 93(1):141–65.
+
+Tomaskovic-Devey, Donald, and Vincent J Roscigno. 1996. “Racial Economic Subordination and White Gain in the U.S. South.” *American Sociological Review* 61(4):565–89.

@@ -1,15 +1,13 @@
 ##################################################################################
 # organize_data.R
 # Your Name Here
-# This script will read in the raw data downloaded from IPUMS, clean it up, 
-# and recode variables. The final dataset will be saved to the output directory
-# as a CSV file. 
+# This script will be used to construct an analytical dataset of states from 
+# the raw data sources. The final state dataset will be saved to the output 
+# directory as "state_data.csv". 
 ##################################################################################
 
-
-# Read in raw data --------------------------------------------------------
-
-
+#read in the CSV file created from read_raw_data.R
+ipums <- read.csv("output/ipums_data.csv")
 
 # Recode variables --------------------------------------------------------
 
@@ -19,8 +17,7 @@
 
 
 
-# Merge Data --------------------------------------------------------------
-
+# Measure Dissimilarity Index ---------------------------------------------
 
 
 # Save final dataset ------------------------------------------------------
