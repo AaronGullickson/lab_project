@@ -1,0 +1,31 @@
+---
+title: "Report"
+author: "Your Name Here"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+A paragraph to introduce the research question
+
+# Data and Methods
+
+A couple of paragraphs to describe where the different data come from and how they were processed and to describe the method of analysis.
+
+Here is a template code chunk for producing a figure. Be sure to change the name of the code chunk if you copy and paste it.
+
+## Analysis
+
+Show how the key independent and dependent variables are distributed. Use graphical techniques to show the bivariate relationship of interest and then show multivariate model results and interpret them. 
+
+```{r figuretemplate, echo=FALSE, fig.cap="A Caption"}
+#code (e.g. plot, hist, barplot, boxplot) to produce the figure
+```
+
+## Conclusions
+
+A paragraph to summarize the findings.
