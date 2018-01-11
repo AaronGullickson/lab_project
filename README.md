@@ -14,7 +14,7 @@ The rest of the lab assignments for the term are going to work towards doing a f
 
 ### Background
 
-For this project, we are going to look at two theories about how the macro-level demographic context of a city might affect the level of racial inequality in that city.
+For this project, we are going to look at two theories about how the macro-level demographic context of a city might affect the level of racial inequality within that city.
 
 Blalock (1967) argued that as the relative size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources.
 
@@ -64,7 +64,7 @@ To access Social Explorer, you will need to be either on the campus network or o
     - T37. Unemployment Rate for Civilian Population in Labor Force 16 years and over.
     - T133. Nativity by Citizenship status.
 
-5. Look over the tables and make sure it looks good, and then click "Data Download". Choose output options "Output column labels in the first row" and "Output ALL geographic identifiers" and then download the CSV file. This is your data file and should go in your `input` directory. You may also want to download the data dictionary for reference. 
+5. Look over the tables and make sure it looks good, and then click "Data Download". Choose output options "Output column labels in the first row" and "Output ALL geographic identifiers" and then download the CSV file. This is your data file and should go in your `input` directory. You may also want to download the data dictionary for reference.
 
 ### Download IPUMS Data
 
@@ -177,34 +177,15 @@ The final combined dataset should be named `met_area`. You do not need to save t
 
 ## Programming Assignment
 
-For this assignment, you will calculate another measure of segregation called the Information Theory Index or sometimes just Theil's *H*, after its creator. The advantage of the Information Theory Index is that it can be calculated for multiple groups, whereas the dissimilarity index can only be calculated for two groups. Theil's *H* provides a measure of the diversity in areas within a region (e.g. tracts within a city, counties within a state), relative to the overall diversity of the region. When Theil's *H* equals one, there is no diversity in the subregions of a region, and when Theil's *H* equals zero, the diversity in each subregion is equal to the overall diversity of the region. You can read the first seven pages of this manuscript to learn more about the relationship between different measures of segregation.
+For this assignment, you will calculate a measure of segregation called the Dissimilarity Index of *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
 
-In order to measure Theil's H, one has to first calculate a measure of diversity for each sub-region and the total region. This measure of diversity is called *entropy* and is based on the proportions of different groups within the area. If $p_j$ is the proportion of group $j$ in the region and there are $J$ total groups, then the formula for entropy ($E$) is given by:
+The html document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
 
-$$E=\sum_{j=1}^{J}(p_j)\log(1/p_j)$$
+For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
 
-Entropy will be at its maximum value when the proportion $p_j$ is the same for each group, and entropy will be at its minimum value of zero when the area is made up entirely of one group.^[The actual maximum value of entropy depends on the base one uses for the log. The standard approach is to use a log-base of 2, but segregation researchers more commonly use a natural log. I personally prefer to use a log base equal to the number of groups ($J$) because then the maximum value will be one. However, this scale issue will be factored out in the actual calculation of Theil's H, so it doesn't really matter what we use so long as we are consistent. For this exercise, we will use the natural log, given by the function `log`.] Lets take a simple example where we have three groups and the first group is 60% of the population of an area and the remaining two groups are 20% each. Entropy would be:
-
-$$E=(0.6)*\log(1/0.6)+0.2*\log(1/0.2)+0.2*\log(1/0.2)=0.95$$
-
-With the natural log used here for three groups, the maximum value of entropy is `r log(3)`, so this area would be considered fairly diverse.
-
-In order to calculate Theil's *H*, one has to first calculate entropy for each sub-region ($E_i$) as well as the overall entropy for the whole region ($E$). One also needs the population totals for each sub-region ($t_i$) as well as the total population of the region ($T$). Theil's H is then given by:
-
-$$H=1-\sum_{i=1}^n\frac{t_i*E_i}{T*E}$$
-
-Theil's H is a weighted average of of how much the diversity of each sub-region varies from the total region. Higher values of *H* indicate more segregation in the sense that the diversity of the sub-regions is low relatively to the overall diversity of the region.
-
-### The Assignment
-
-For the assignment, please download this data which gives the count of individuals by race for every tract in the US, except for Washington DC and Puerto Rico. I have already calculated entropy for each of these tracts. In an R script, you should do the following:
-
-1) Create a function that calculates Theil's *H* for a dataset of tracts from a single state.
-2) Use this function in a for-loop to create a dataset of Theil's *H* for each state.
-3) Plot a histogram of Theil's *H* across all states.
-3) Load in my version of the final state-level data from last week's exercise and merge it with this dataset. Write out the fully merged dataset as a CSV file.
-
-Submit your R script here to complete the assignment.
+- Create a calculateDissimilarity function that when given a dataset of tracts, will compute the dissimilarity index and return the results.
+- A for-loop or `lappy` command that uses the function above to actually calculate dissimilarity for each city.
+- Merge this dissimilarity index into the `met_area` dataset produced in the previous assignment.
 
 ## R Markdown Assignment
 
