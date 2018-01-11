@@ -6,7 +6,7 @@
 - [Combining and Merging Data Assignment](#combining-and-merging-data-assignment)
 - [Programming Assignment](#programming-assignment)
 - [R Markdown Assignment](#r-markdown-assignment)
-
+- [References](#references)
 
 ## Introduction
 
@@ -51,6 +51,20 @@ In GitHub you can easily add a tag by creating a "release." in the Code tab, cli
 For the first assignment, you will need to create a data extract from the Social Explorer dataset and the  IPUMS website and then write R code that will read these data extracts into R.
 
 ### Download Social Explorer Data
+
+To access Social Explorer, you will need to be either on the campus network or operating through the [campus VPN](https://it.uoregon.edu/vpn). From the [Social Explorer main page](https://www.socialexplorer.com), follow these steps:
+
+1. Choose the "Tables" option and then "American Community Survey (5 year estimates)" and then "Begin Report" for ACS 2012-2016.
+2. For geography type, select Census Tract (140).
+3. Do not select a state. Highlight "All census tracts" and click "Add" then "Proceed to tables."
+4. Select the following variables and then "Show results":
+
+    - T14. Hispanic or Latino by race
+    - T25. Educational Attainment for Population 25 years or older.
+    - T37. Unemployment Rate for Civilian Population in Labor Force 16 years and over.
+    - T133. Nativity by Citizenship status.
+
+5. Look over the tables and make sure it looks good, and then click "Data Download". Choose output options "Output column labels in the first row" and "Output ALL geographic identifiers" and then download the CSV file. This is your data file and should go in your `input` directory. You may also want to download the data dictionary for reference. 
 
 ### Download IPUMS Data
 
