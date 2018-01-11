@@ -1,5 +1,11 @@
 **Table of Contents**
-[Introduction](#Introduction)
+
+[Introduction](#introduction)
+[Reading and Writing Data Assignment](#reading-and-writing-data-assignment)
+[Cleaning Data Assignment](#cleaning-data-assignment)
+[Combining and Merging Data Assignment](#combining-and-merging-data-assignment)
+[Programming Assignment](#programming-assignment)
+[R Markdown Assignment](#r-markdown-assignment)
 
 ## Introduction
 
