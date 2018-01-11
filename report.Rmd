@@ -6,6 +6,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(stargazer)
 met_area <- read.csv("output/met_area.csv")
 ```
 
@@ -28,10 +29,24 @@ Show how the key independent and dependent variables are distributed. Use graphi
 ```
 
 ```{r regression_template, echo=FALSE, results='asis'}
-#obviously these are not the models you want
+#make some models
+model1 <- lm()
+model2 <- lm()
+model3 <- lm()
 
-
-
+#change type to "text" for inline test output, change back to "latex" for knitting to PDF
+stargazer(model1, model2, model3,
+          type="latex",
+          keep.stat=c("n","rsq"),
+          star.cutoffs = c(0.05,0.01,0.001),
+          covariate.labels = c("Covariate labels here"),
+          dep.var.labels.include = FALSE,
+          dep.var.caption="White-Black SEI Difference",
+          title = "Your caption here",
+          notes.append=TRUE,
+          notes.align="l",
+          notes=c("Some notes","Some more notes"),
+          header=FALSE)
 ```
 
 ## Conclusions

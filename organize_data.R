@@ -36,7 +36,7 @@ calculateDissimilarity <- function(city) {
   #your function here
 }
 
-#for-loop through each metro area and calculate dissimilarity
+#for-loop or lapply through each metro area and calculate dissimilarity
 
 #put results in a data.frame
 

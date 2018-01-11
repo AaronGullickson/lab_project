@@ -181,21 +181,21 @@ For this assignment, you will calculate a measure of segregation called the Diss
 
 The html document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
 
-For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
+For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write most of this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
 
 - Create a calculateDissimilarity function that when given a dataset of tracts, will compute the dissimilarity index and return the results.
 - A for-loop or `lappy` command that uses the function above to actually calculate dissimilarity for each city.
-- Merge this dissimilarity index into the `met_area` dataset produced in the previous assignment.
+- Merge this dissimilarity index into the `met_area` dataset produced in the previous assignment. This code should be done in the "Merge data" section.
 
 ## R Markdown Assignment
 
-In this assignment, we will answer the research question that we began with for our mini-project: How does the relative size of the black population in a state affect the difference in occupational status between whites and blacks?
+In this assignment, we will finally answer the research question: How does the relative size of the black population and the level of black/white segregation in a city affect the difference in occupational status between whites and blacks?
 
-In your previous assignment, you already produced the models necessary to answer this question. In this assignment, I want you to to use R Markdown to report your findings, including the results of those models as well as some graphical displays of univariate distributions and bivariate relationships.
+Ultimately, I want you to report your results in a short PDF report from an R Markdown file. I give you freedom in thinking about how to get there, but you will ultimately need some OLS regression models that consider controls for the percent foreign born, percent college-educated, and unemployment in a city. You will also want to give some thought to graphical displays of the univariate and bivariate distributions of key variables.
 
-You can use the provided R Markdown Template file to get started. This file will give you some basic instructions about the structure of the report and what content should go into each section. The full data to analyze are available here.
+You can use the `report.Rmd` file in the repository as a skeleton for your report. This document contains some stub information about sectioning of the report and what should go into each section of the report. It also gives you templates for R code chunks that can produce figures and regression tables. You can do your initial analysis in the provided `analysis.R` script, create a separate `analysis.Rmd` file for the analysis, or just do the entire analysis in the `report.Rmd` document. I leave that choice up to you.
 
-When completed, you can upload your R Markdown (*.Rmd) file here.
+When your report is completed, be sure to commit the PDF file as well as the R Markdown file. Tag your release and you are done with this project! 
 
 ## References
 
