@@ -1,3 +1,6 @@
+**Table of Contents**
+[Introduction](#Introduction)
+
 ## Introduction
 
 The rest of the lab assignments for the term are going to work towards doing a full statistical analysis. We will use the same git repository for each component of this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
@@ -83,7 +86,7 @@ The tract data is in CSV format so it should be easier to load into R. Keep in m
 
 After you have read in the tract data, I would like you to run the code that is already present in the script to assign metropolitan area ids to each tract. These will not be provided in the data from social explorer, but can be determined by cross-referencing state and county ids with metropolitan statistical area ids, which is what this code does. You should then remove any tracts with a missing value on met2013 id, because these tracts do not belong to metropolitan statistical areas.
 
-The annoying thing about the social explorer data is the non-intuitive nature of the variable names. There are also a lot of variables that we do not need. I would like you to keep only the following variables and to rename them to something more intuitive.
+One annoying thing about the social explorer data is the non-intuitive nature of the variable names. There are also a lot of variables that we do not need. I would like you to keep only the following variables and to rename them to something more intuitive.
 
 - `met2013` - keep this name as we will use it to merge datasets later.
 - `met_name` - keep this name
@@ -103,59 +106,53 @@ Once you are satisfied with the tract-level data, save it as a CSV file in the `
 
 ## Cleaning Data Assignment
 
-For this assignment, you will take the raw IPUMS data produced in the last assignment and clean it up. The data will need to be subset, variables will need to be recoded and missing values assigned. You will need the codebook provided by IPUMS in order to properly do this assignment. Here are the steps you need to follow to clean your data. All of the code for this exercise should go in the `organize_data.R` script under the "Clean data" heading.
+For this assignment, you will take the two datasets produced in the last assignment, code some variables and aggregate the data to the level of the metropolitan area. All of the code for this exercise should go in the `organize_data.R` script under the "Organize IPUMS data" and "Organize Tract data" headings.
 
-1. Code the following new variables. Be sure to properly assign missing values if the values on any of the original variables used to construct the new variable are missing. You should also include diagnostic code that checks to make sure that your re-coding was done correctly.
-    A) A factor variable called `racecombo` that combines the `race` and `hispan` variables to create the following categories:
-    - Non-Hispanic White
-    - Non-Hispanic Black
-    - non-Hispanic Asian or Pacific Islander
-    - non-Hispanic American Indian or Alaska Native
-    - non-Hispanic Other
-    - non-Hispanic Multiple race
-    - Hispanic
+### IPUMS Data
 
-    B) A factor variable for regions named `bigregion` with the following collapsed categories based on `region`:
-    - Northeast: New England+Middle Atlantic+Delaware
-    - South: South Atlantic (except Delaware) + East South Central + West South Central
-    - Midwest: East North Central + West North Central
-    - West: Mountain + Pacific
+You should use the `race` and `hispan` variables to code a new factor variable called `racecombo`. This variable should have the following categories:
 
-    C) A dichotomous factor variable called `birthplace` with the categories:
-    - Foreign-born
-    - Native-born
+  - Non-Hispanic White
+  - Non-Hispanic Black
+  - non-Hispanic Asian or Pacific Islander
+  - non-Hispanic American Indian or Alaska Native
+  - non-Hispanic Other
+  - non-Hispanic Multiple race
+  - Hispanic
 
-    D) A dichotomous categorical variable named `college` with the categories:
-    - Four year college degree or more
-    - less than a four year college degree
+After creating this variable, you should run some diagnostic checks to make sure that all the observations are in the categories that you expected.
 
-2. Assign missing values to SEI for any observation with a value of zero.
+Once you are satisfied with the variable, it is time to aggregate the individual level data up to the metro-area level. Ultimately, we want to create a metro-area level dataset with the following four variables:
 
-3. Subset the data according to the following criteria:
-  A) Only keep individuals who are currently living in a US State (do not include DC or Puerto Rico).
-  B) Remove all variables except the state fips code, the SEI measure, and all of the new variables constructed above.
+- `met2013`: the metro area id
+- `seidiff`: the mean SEI of whites in each metro area minus the mean SEI of blacks in each metro area.
+- `black_n`: the number of black respondents in the sample for the given metro area.
+- `white_n`: the number of white respondents in the sample for the given metro area.
 
-Once you are satisfied with your code you can commit and tag your assignment. There is no need to save the data as we will continue working with the `organize_data.R` script in the next assignment.
+There are multiple ways you could go about this aggregation. Most likely the `tapply` function will come in handy. You do not need to save this dataset to the filesystem as we will continue to work on it in this same script in the next assignment.
+
+### Tract Data
+
+We want to sum up the numbers across tracts for each metro area and then use those raw counts to construct several variables. The first step will be to aggregate values up to the metro-area level. This can be done fairly easily with the `aggregate` command.
+
+Once you have the data aggregated to the metro area, construct the following four variables:
+
+- `pct_black`: The percent of the population that is non-Hispanic black.
+- `unemployment`: The unemployment rate, which is the percent of the labor force that is unemployed.
+- `pct_foreign_born`: The percent of the population that is foreign born.
+- `pct_college`: The percent of the population over the age of 25 that has at least a Bachelor's degree.
+
+Once you are satisfied with these four variables, you should drop all of the other variables in your dataset except for `met2013`. If you want a challenge, you can try to figure out how to get `met_name` back in your metro-area dataset. You do not need to save this dataset to the filesystem as we will continue to work on it in this same script in the next assignment.
 
 ## Combining and Merging Data Assignment
 
-For we are going to aggregate this data to the state level so that our units of analysis are individual states rather than individual respondents and we are going to merge this state aggregated data with some other data from the 2012 Economic Census of the US on the relative frequency of different types of industry at the state level.
+From the previous assignment, you should have two different metro-area level datasets. The first dataset was created by aggregating the individual-level IPUMS data and the second dataset was created by aggregating the tract-level data. In this assignment, you will merge those two datasets together into a single dataset. You should put this code in your `organize_data.R` script under the "Merge data" heading.
 
-1. The first step is to create the state aggregated data from the individual level data. You should be able to use the `tapply` command with the `fips` variable as the second command to produce vectors of the aggregated data listed below. For some of these you will have to think creatively about the most efficient way to get the aggregated data. Remember that boolean statements and `tapply` are your friend.
-- The percent of each state's population that is non-Hispanic black, named `pctblack`.
-- The percent of each state's population that is foreign-born, named `pctforeign`.
-- The percent of each state's population with a college degree, named `pctcollege`.
-- mean SEI for each state, named `meansei`.
-- The big region of the country where each state is located, named `region`. (see footnote below for hint on how to do this)
-- The difference in SEI between NH whites and NH blacks in a state, named `diffsei`.
-- The difference in college completion percent between NH whites and NH blacks, named `diffcollege`.
+You should note that these two datasets do not contain the same number of observations. The IPUMS data has far fewer metro areas because only very large metro areas were identified in the individual-level data. There are also a couple of cases where the IPUMS data does not have a corresponding metro area from the tract data due to some discrepancies in identification between the two data sources. Your final dataset should contain only metro areas that had valid observations in both datasets.
 
-2. Once you have created all of these variables, you will want to combine them together into a single `data.frame` along with the state FIPS code and name^[Extracting the FIPS code and state name can be a little tricky. The code `temp <- census[!duplicated(census$fips),c("fips","state_name","bigregion")]` should give you something useable. Note that this will also give you the region of each state.] using the `data.frame` command. Name this data.frame `states`.
+Furthermore, some metro areas had very small samples of either white or black respondents. In these cases, there is likely to be a lot of statistical noise in our estimation of the SEI differences. To address this problem, I want you to remove all metro areas that had fewer than 50 black or white respondents. This is crude but fairly effective. We will learn a better way to handle this kind of issue next term (spoiler: multilevel models).
 
-3. Download the CSV data from the 2012 Economic Census of the US and `merge` this data with the `states` data.frame. Finally, you can remove the observation for Washington DC, because we have no data on this from the Economic Census data and it doesn't really fit here anyway because its a city and not a state. Finally use `write.csv` to write out your dataset to a file.
-
-Be sure to run checks on your code. When done, upload your R script here to complete the assignment.
-
+The final combined dataset should be named `met_area`. You do not need to save this dataset to the filesystem as we will continue working with this script in the next assignment.  
 
 ## Programming Assignment
 
