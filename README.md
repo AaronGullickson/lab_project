@@ -177,7 +177,7 @@ The final combined dataset should be named `met_area`. You do not need to save t
 
 ## Programming Assignment
 
-For this assignment, you will calculate a measure of segregation called the Dissimilarity Index of *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
+For this assignment, you will calculate a measure of segregation called the Dissimilarity Index or *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
 
 The html document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
 
@@ -195,7 +195,7 @@ Ultimately, I want you to report your results in a short PDF report from an R Ma
 
 You can use the `report.Rmd` file in the repository as a skeleton for your report. This document contains some stub information about sectioning of the report and what should go into each section of the report. It also gives you templates for R code chunks that can produce figures and regression tables. You can do your initial analysis in the provided `analysis.R` script, create a separate `analysis.Rmd` file for the analysis, or just do the entire analysis in the `report.Rmd` document. I leave that choice up to you.
 
-When your report is completed, be sure to commit the PDF file as well as the R Markdown file. Tag your release and you are done with this project! 
+When your report is completed, be sure to commit the PDF file as well as the R Markdown file. Tag your release and you are done with this project!
 
 ## References
 
