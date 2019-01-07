@@ -95,7 +95,7 @@ You will need to write code in the `read_raw_data.R` script that reads in the fi
 
 #### Reading in the IPUMS Data
 
-The IPUMS data is in fixed-width format. The codebook should provide you with the information you need to determine the widths necessary for the `read.fwf` command. Also, because the data is g-zipped, you will want to access it with the `gzfile("input/name_of_data.dat.gz", open="r")` command. Fixed-width data can be slow to read in. On my laptop, this data took about five minutes to read. YRMV.
+The IPUMS data is in fixed-width format. The codebook should provide you with the information you need to determine the widths necessary to read in the data. I would strongly recommend using the `read_fwf` function in the `readr` library rather than the `read.fwf` function in base R, because it `read_fwf` is much faster. The `read_fwf` function can also directly read a g-zipped file whereas the `read.fwf` will require you to access your g-zipped file with the command  `gzfile("input/name_of_data.dat.gz", open="r")`.
 
 Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in cases of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
 

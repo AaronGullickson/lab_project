@@ -6,8 +6,12 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(stargazer)
 met_area <- read.csv("output/met_area.csv")
+#check for texreg package
+if(!require("texreg")) {
+  install.packages("texreg")
+  library(texreg)
+}
 ```
 
 ## Introduction
@@ -34,19 +38,17 @@ model1 <- lm()
 model2 <- lm()
 model3 <- lm()
 
-#change type to "text" for inline test output, change back to "latex" for knitting to PDF
-stargazer(model1, model2, model3,
-          type="latex",
-          keep.stat=c("n","rsq"),
-          star.cutoffs = c(0.05,0.01,0.001),
-          covariate.labels = c("Covariate labels here"),
-          dep.var.labels.include = FALSE,
-          dep.var.caption="White-Black SEI Difference",
-          title = "Your caption here",
-          notes.append=TRUE,
-          notes.align="l",
-          notes=c("Some notes","Some more notes"),
-          header=FALSE)
+#to print to screen replace texreg with screenreg
+texreg(list(model1, model2, model3),
+       caption="Your caption here",
+       #custom.coef.names = c("Covariate labels here"), #uncomment to add nice labels to independent variables
+       digits = 3,
+       caption.above=TRUE, 
+       include.rsquared=TRUE,
+       include.adjrs=FALSE,
+       include.nobs=TRUE,
+       include.rmse=FALSE,
+       custom.note ="%stars.\nNotes: Some notes.")
 ```
 
 ## Conclusions
