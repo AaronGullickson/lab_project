@@ -2,17 +2,16 @@
 # read_raw_data.R
 # Your Name Here
 # This script will read in the raw data downloaded from IPUMS and Social Explorer
-# perform some initial cleaning and subsetting and save it to a CSV  file. 
+# and perform some initial cleaning and subsetting. 
 ##################################################################################
 
+library(readr)
 
 # IPUMS Data --------------------------------------------------------------
 
 #read in the IPUMS fixed-width data from gzip file.
 
 #drop cases that are missing on met2013 or SEI (i.e. have a zero value)
-
-#write as CSV named "ipums_data.csv" to output directory
 
 
 # Tract Data --------------------------------------------------------------
@@ -24,8 +23,7 @@
 counties2cbsa <- read.csv("input/counties2cbsa.csv", header = TRUE)
 tracts <- merge(tracts, counties2cbsa, all.x=TRUE, all.y=FALSE)
 
-#Subset the data to remove any tracts with a missing met2013 id and drop variables we don't need
+#Subset the data to remove any tracts with a missing met2013 id and drop variables
+#we don't need
 
 #provide better variable names
-
-#write tract data as CSV named "tract_data.csv" to output directory

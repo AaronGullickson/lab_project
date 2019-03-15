@@ -3,20 +3,20 @@
 - [Introduction](#introduction)
 - [Reading and Writing Data Assignment](#reading-and-writing-data-assignment)
 - [Cleaning Data Assignment](#cleaning-data-assignment)
-- [Combining and Merging Data Assignment](#combining-and-merging-data-assignment)
 - [Programming Assignment](#programming-assignment)
+- [Combining and Merging Data Assignment](#combining-and-merging-data-assignment)
 - [R Markdown Assignment](#r-markdown-assignment)
 - [References](#references)
 
 ## Introduction
 
-The rest of the lab assignments for the term are going to work towards doing a full statistical analysis. We will use the same git repository for each component of this project and you will "tag" your repository at various points to indicate completion of a particular assignment.
+The rest of the lab assignments for the term are going to work towards doing a full statistical analysis. We will use the same git repository for each component of this project and you will use the GitHub issues tab to open a new issue when you complete an assignment.
 
 ### Background
 
 For this project, we are going to look at two theories about how the macro-level demographic context of a city might affect the level of racial inequality within that city.
 
-Blalock (1967) argued that as the relative size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain their power. On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources.
+Blalock (1967) argued that as the relative size of a minority group increases, it represents a greater perceived threat to the economic and political hegemony of the majority group, and will lead to greater efforts by the majority group to control and limit minority groups in order to maintain power. On the other hand, Massey and Denton (1993) have argued that racial segregation is the "linchpin" of racial inequality in the US, because it concentrates disadvantage in minority neighborhoods and segregates the social networks that provide important access to resources. Neither of these theories are mutually exclusive. We will use recent Census data to examine the empirical evidence for each argument.
 
 ### Our Project
 
@@ -26,7 +26,7 @@ We are going to test out Blalock's theory by looking at the association between 
 
 We will use two primary data sources to construct our analytical dataset. first, we will use [Social Explorer](https://socialexplorer.com) to download census tract data for the entire US based on American Community Survey (ACS) data from 2012-2016. The ACS is an annual 1% survey of the American population conducted by the US Census Bureau that collects a variety of demographic information. Ultimately, we want data at the level of metropolitan statistical areas (i.e. cities). However, we need data at the tract level within cities in order to calculate the dissimilarity index of segregation. Therefore we will just download tract data and ultimately aggregate this up to the level of metropolitan areas.
 
-Unfortunately, the census bureau does not publish aggregate data that will give us the mean difference in SEI between whites and blacks in a metropolitan area. In order to get this number, we will need to download the individual-level ACS data from 2014 and calculate the difference ourselves. We will be downloading the ACS extract from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. Unfortunately, for reasons of confidentiality the metropolitan area of respondents is only available in larger metropolitan areas, so our analysis will be limited to the largest 150-200 cities in the US.
+Unfortunately, the Census bureau does not publish aggregate data that will give us the mean difference in SEI between whites and blacks in a metropolitan area. In order to get this number, we will need to download the individual-level ACS data from 2014 and calculate the difference ourselves. We will be downloading the ACS extract from the [Integrated Public Use Microdata Series](https://usa.ipums.org/usa/) (IPUMS) at the Minnesota Population Center. Unfortunately, for reasons of confidentiality the metropolitan area of respondents is only available in larger metropolitan areas, so our analysis will be limited to the largest 150-200 cities in the US.
 
 #### Overall Plan
 
@@ -34,17 +34,44 @@ We will develop this project over multiple exercises. Here is an overview of the
 
 1. Create the necessary data extracts from Social Explorer and IPUMS and read this data into R.
 2. Clean, recode, and aggregate the data up to the metro-level area.
-3. Merge the dataset from social explorer with the dataset from IPUMS.
+3. Merge the dataset from Social Explorer with the dataset from IPUMS.
 4. Calculate the dissimilarity index for each metro area and merge this into the data from (3). We now have a final analytical dataset.
 5. Conduct the analysis on the analytical dataset, and write up a report of your analysis in R Markdown with tables and figures.
 
 Further instructions for each of these assignments are provided below.
 
-#### Tagging Releases for Assignment Completion
+#### Using the Issues Tab for Assignment Completion
 
-As you complete each assignment, you will indicate that you have completed it by "tagging" that commit. In git, you can tag any commit to keep track of important commits during the process.
+As you complete each assignment, you will indicate that you have completed it by opening a new issue on your GitHub repository. Go to the "Issues" tab and select the "New Issue" button. Title the issue with the name of the assignment and in the initial message indicate that you are complete and use @AaronGullickson to alert me. 
 
-In GitHub you can easily add a tag by creating a "release." in the Code tab, click on the "releases" link at the top, and then choose the button "create a new release." For the tag version, write "labX" where X is replaced by the number above (1 for the first assignment, 2 for the second and so on) and the name of the assignment is given as the title (e.g. "Reading and Writing Data Assignment"). I will then be able to tell that you have completed the assignment. If I see any issues with your code, I will correct those issues and make a new commit, so that your code is ready to go for the next assignment.
+I will use this same issue to further communicate with you about the assignment, including providing you my evaluation. 
+
+#### Code Syntax
+
+One important aspect of writing good code is maintaining a consistent style in how you write this code. This can include things like how long a single line can be, how you label variable names, how you use comments, where you put spaces, etc. In order to start working toward style consistency, I would like you to follow these rules in your coding syntax for this assignment:
+
+1. **Length of a line of code**. A single line of code should only be about 80 characters long. You can use the length of the sectioning comments as a rough guideline. If your code is longer than this, be sure to use multiple lines with proper indentation to write your code. The "control+i" keystroke will fix indentation for you on multi-line commands. 
+2. **Variable names**. All variables should have lower case names and should not include spaces or special characters. Use the underscore (_) to simulate spacing. Do not start variable names with a number. Variable names should be no longer than 20 characters long.
+3. **Category names**. The names of categories in factor variables should be no longer than 20 characters. 
+4. **Spacing**. Always put a single space between assignment operators (e.g. `<-`) and after commas.
+
+#### Required Libraries
+
+We will work with a few additional libraries for this project. In addition, I want all students to be able to knit their final R Markdown report to a PDF which will require the installation of `tinytex` on your system. The libraries we will use are:
+
+1. `readr` - A tidyverse package for reading in ascii text in either delimited or fixed-width format.
+2. `rmarkdown` - A package that lets use R Markdown files in RStudio and knit them to PDF documents.
+3. `texreg` - A package for output the results of statistical models in a nice format. 
+4. `tinytex` - A package that will help you install a light-weight TeX distribution on your computer so you can properly knit R Markdown files to PDF. 
+
+If you are on an OSX system, you may need to run the following commands in the Terminal for tinytex to work on your system: 
+
+```bash
+sudo chown -R `whoami`:admin /usr/local/bin
+~/Library/TinyTeX/bin/x86_64-darwin/tlmgr path add
+```
+
+For all users, in order to install these packages on your system, just source in the `check_packages.R` script included in this repository. 
 
 ## Reading and Writing Data Assignment
 
@@ -99,7 +126,7 @@ The IPUMS data is in fixed-width format. The codebook should provide you with th
 
 Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in cases of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
 
-Be sure that all of your variables have good variable names. Furthermore, to shrink our dataset a little bit, I would like you to subset it so that only cases with a valid MET2013 and SEI (i.e. non-zero value) are kept. Once you are satisfied with your dataset, save it to the `output` directory as a CSV file with the name `ipums_data.csv`.
+Be sure that all of your variables have good variable names. Furthermore, to shrink our dataset a little bit, I would like you to subset it so that only cases with a valid MET2013 and SEI (i.e. non-zero value) are kept.
 
 #### Reading in the Tract Data
 
@@ -121,9 +148,7 @@ One annoying thing about the social explorer data is the non-intuitive nature of
 - `SE_T025_008` - total population over the age of 25 with doctoral degree.
 - `SE_T037_001` - total labor force population
 - `SE_T037_003` - total number of persons unemployed
-- `SE_T133_033` - total number of persons foreign-born
-
-Once you are satisfied with the tract-level data, save it as a CSV file in the `output` directory with the name "tract_data.csv".
+- `SE_T133_003` - total number of persons foreign-born
 
 ## Cleaning Data Assignment
 
@@ -143,18 +168,9 @@ You should use the `race` and `hispan` variables to code a new factor variable c
 
 After creating this variable, you should run some diagnostic checks to make sure that all the observations are in the categories that you expected.
 
-Once you are satisfied with the variable, it is time to aggregate the individual level data up to the metro-area level. Ultimately, we want to create a metro-area level dataset with the following four variables:
-
-- `met2013`: the metro area id
-- `seidiff`: the mean SEI of whites in each metro area minus the mean SEI of blacks in each metro area.
-- `black_n`: the number of black respondents in the sample for the given metro area.
-- `white_n`: the number of white respondents in the sample for the given metro area.
-
-There are multiple ways you could go about this aggregation. Most likely the `tapply` function will come in handy. You do not need to save this dataset to the filesystem as we will continue to work on it in this same script in the next assignment.
-
 ### Tract Data
 
-We want to sum up the numbers across tracts for each metro area and then use those raw counts to construct several variables. The first step will be to aggregate values up to the metro-area level. This can be done fairly easily with the `aggregate` command.
+We want to sum up the numbers across tracts for each metro area and then use those raw counts to construct several variables. The first step will be to aggregate values up to the metro-area level. This can be done fairly easily with the `aggregate` command (hint: the `cbind` command will help you do this for multiple variables at the same time).
 
 Once you have the data aggregated to the metro area, construct the following four variables:
 
@@ -165,27 +181,48 @@ Once you have the data aggregated to the metro area, construct the following fou
 
 Once you are satisfied with these four variables, you should drop all of the other variables in your dataset except for `met2013`. If you want a challenge, you can try to figure out how to get `met_name` back in your metro-area dataset. You do not need to save this dataset to the filesystem as we will continue to work on it in this same script in the next assignment.
 
-## Combining and Merging Data Assignment
-
-From the previous assignment, you should have two different metro-area level datasets. The first dataset was created by aggregating the individual-level IPUMS data and the second dataset was created by aggregating the tract-level data. In this assignment, you will merge those two datasets together into a single dataset. You should put this code in your `organize_data.R` script under the "Merge data" heading.
-
-You should note that these two datasets do not contain the same number of observations. The IPUMS data has far fewer metro areas because only very large metro areas were identified in the individual-level data. There are also a couple of cases where the IPUMS data does not have a corresponding metro area from the tract data due to some discrepancies in identification between the two data sources. Your final dataset should contain only metro areas that had valid observations in both datasets.
-
-Furthermore, some metro areas had very small samples of either white or black respondents. In these cases, there is likely to be a lot of statistical noise in our estimation of the SEI differences. To address this problem, I want you to remove all metro areas that had fewer than 50 black or white respondents. This is crude but fairly effective. We will learn a better way to handle this kind of issue next term (spoiler: multilevel models).
-
-The final combined dataset should be named `met_area`. You do not need to save this dataset to the filesystem as we will continue working with this script in the next assignment.  
-
 ## Programming Assignment
 
 For this assignment, you will calculate a measure of segregation called the Dissimilarity Index or *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
 
-The html document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
+The PDF document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
 
-For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write most of this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
+For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
 
 - Create a calculateDissimilarity function that when given a dataset of tracts, will compute the dissimilarity index and return the results.
 - A for-loop or `lappy` command that uses the function above to actually calculate dissimilarity for each city.
-- Merge this dissimilarity index into the `met_area` dataset produced in the previous assignment. This code should be done in the "Merge data" section.
+- Create a dataframe of dissimilarity indices rom the results of your for-loop. This dataset should have two variables: (1) `met2013` to identify metropolitan areas, (2) `D` for the actual dissimilarity index in each metropolitan area.
+
+## Combining and Merging Data Assignment
+
+For this assignment, we will combine all the pieces we have been working on so far into a single analytical dataset. 
+
+### Creating aggregate IPUMS data
+
+Our first step is to aggregate the individual level IPUMS data to the metro-area level to get SEI differences by race for each metro area. Ultimately, we want to create a metro-area level dataset with the following four variables:
+
+- `met2013`: the metro area id
+- `seidiff`: the mean SEI of whites in each metro area minus the mean SEI of blacks in each metro area.
+- `black_n`: the number of black respondents in the sample for the given metro area.
+- `white_n`: the number of white respondents in the sample for the given metro area.
+
+There are multiple ways you could go about this aggregation. It will most likely involve using the `aggregate` command, and then subsetting results, before merging them back together again. This code should be placed under the "Organize IPUMS data" section of `organize_data.R`. 
+
+### Merging everything together 
+
+In the "Merge data" section of `organize_data.R`, you can now merge the three pieces of data that you have into a single analytical dataset. The three sepaerate pieces of data are:
+
+1. The data aggregated up from the IPUMS that gives the black/white SEI differences and the number of white and black respondents by metro area. 
+2. The tract-level data aggregated up to the metropolitan area that gives demographic characteristics like the percent black, unemployment rates, etc.
+3. The dissimilarity index dataset from the programming assignment that contains the dissimilarity index by metropolitan area.
+
+All three of these datasets should have a `met2013` id that can be used to merge them together. 
+
+You should note that these Social Explorer and IPUMS datasets do not contain the same number of observations at the metropolitan level. The IPUMS data has far fewer metro areas because only very large metro areas were identified in the individual-level data. There are also a couple of cases where the IPUMS data does not have a corresponding metro area from the tract data due to some discrepancies in identification between the two data sources. Your final dataset should contain only metro areas that had valid observations in both datasets.
+
+Furthermore, some metro areas had very small samples of either white or black respondents. In these cases, there is likely to be a lot of statistical noise in our estimation of the SEI differences. To address this problem, I want you to remove all metro areas that had fewer than 50 black or white respondents. This is crude but fairly effective. We will learn a better way to handle this kind of issue next term (spoiler: multilevel models).
+
+The final combined dataset should be named `met_area`. You should save this as `met_area.RData` in the `output` directory. We are now done with the `organize_data.R` script. 
 
 ## R Markdown Assignment
 
@@ -195,7 +232,7 @@ Ultimately, I want you to report your results in a short PDF report from an R Ma
 
 You can use the `report.Rmd` file in the repository as a skeleton for your report. This document contains some stub information about sectioning of the report and what should go into each section of the report. It also gives you templates for R code chunks that can produce figures and regression tables. You can do your initial analysis in the provided `analysis.R` script, create a separate `analysis.Rmd` file for the analysis, or just do the entire analysis in the `report.Rmd` document. I leave that choice up to you.
 
-When your report is completed, be sure to commit the PDF file as well as the R Markdown file. Tag your release and you are done with this project!
+When your report is completed, be sure to commit the PDF file as well as the R Markdown file.
 
 ## References
 

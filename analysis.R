@@ -5,5 +5,4 @@
 # to perform the analysis. 
 ##################################################################################
 
-met_area <- read.csv("output/met_area.csv")
-
+load("output/met_area.RData")

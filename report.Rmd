@@ -6,7 +6,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-met_area <- read.csv("output/met_area.csv")
+load("output/met_area.RData")
 #check for texreg package
 if(!require("texreg")) {
   install.packages("texreg")
