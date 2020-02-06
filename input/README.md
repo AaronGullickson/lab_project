@@ -1,3 +1,3 @@
-This directory should contain any raw data that you receive from elsewhere as well as any important documentation for that data. The tract-level data from the US census is already located here, but you will need to add in the raw individual-level data from your IPUMS extract.
+This directory should contain any raw data that you receive from elsewhere as well as any important documentation for that data. This dataset already contains a CSV file that we will use to connect counties to metropolitan areas. You need to add to it the raw data you get from [Social Explorer](https://www.socialexplorer.com/) and [IPUMS](https://usa.ipums.org/usa/). **Please remember to keep the data zipped up if it is larger than 100mb unzipped, or you will run into problems when pushing to GitHub.** 
 
 By maintaining separate input and output directories for your data, you can easily distinguish the raw original data from analytical datasets that you have constructed.
