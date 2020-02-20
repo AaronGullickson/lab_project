@@ -4,7 +4,7 @@
 - [Reading and Writing Data Assignment](#reading-and-writing-data-assignment)
 - [Cleaning Data Assignment](#cleaning-data-assignment)
 - [Programming Assignment](#programming-assignment)
-- [Combining and Merging Data Assignment](#combining-and-merging-data-assignment)
+- [Combining and Merging Data Assignment](#reshaping-and-merging-data-assignment)
 - [R Markdown Assignment](#r-markdown-assignment)
 - [References](#references)
 
@@ -42,17 +42,17 @@ Further instructions for each of these assignments are provided below.
 
 #### Using the Issues Tab for Assignment Completion
 
-As you complete each assignment, you will indicate that you have completed it by opening a new issue on your GitHub repository. Go to the "Issues" tab and select the "New Issue" button. Title the issue with the name of the assignment and in the initial message indicate that you are complete and use @AaronGullickson to alert me. 
+As you complete each assignment, you will indicate that you have completed it by opening a new issue on your GitHub repository. Go to the "Issues" tab and select the "New Issue" button. Title the issue with the name of the assignment and in the initial message indicate that you are complete and use @AaronGullickson to alert me.
 
-I will use this same issue to further communicate with you about the assignment, including providing you my evaluation. 
+I will use this same issue to further communicate with you about the assignment, including providing you my evaluation.
 
 #### Code Syntax
 
 One important aspect of writing good code is maintaining a consistent style in how you write this code. This can include things like how long a single line can be, how you label variable names, how you use comments, where you put spaces, etc. In order to start working toward style consistency, I would like you to follow these rules in your coding syntax for this assignment:
 
-1. **Length of a line of code**. A single line of code should only be about 80 characters long. You can use the length of the sectioning comments as a rough guideline. If your code is longer than this, be sure to use multiple lines with proper indentation to write your code. The "control+i" keystroke will fix indentation for you on multi-line commands. 
+1. **Length of a line of code**. A single line of code should only be about 80 characters long. You can use the length of the sectioning comments as a rough guideline. If your code is longer than this, be sure to use multiple lines with proper indentation to write your code. The "control+i" keystroke will fix indentation for you on multi-line commands.
 2. **Variable names**. All variables should have lower case names and should not include spaces or special characters. Use the underscore (_) to simulate spacing. Do not start variable names with a number. Variable names should be no longer than 20 characters long.
-3. **Category names**. The names of categories in factor variables should be no longer than 20 characters. 
+3. **Category names**. The names of categories in factor variables should be no longer than 20 characters.
 4. **Spacing**. Always put a single space between assignment operators (e.g. `<-`) and after commas.
 
 #### Required Libraries
@@ -61,17 +61,18 @@ We will work with a few additional libraries for this project. In addition, I wa
 
 1. `readr` - A tidyverse package for reading in ascii text in either delimited or fixed-width format.
 2. `rmarkdown` - A package that lets use R Markdown files in RStudio and knit them to PDF documents.
-3. `texreg` - A package for output the results of statistical models in a nice format. 
-4. `tinytex` - A package that will help you install a light-weight TeX distribution on your computer so you can properly knit R Markdown files to PDF. 
+3. `texreg` - A package for output the results of statistical models in a nice format.
+4. `tinytex` - A package that will help you install a light-weight TeX distribution on your computer so you can properly knit R Markdown files to PDF.
+5. `reshape2` - A package for reshaping data between long and wide formats.
 
-If you are on an OSX system, you may need to run the following commands in the Terminal for tinytex to work on your system: 
+If you are on an OSX system, you may need to run the following commands in the Terminal for tinytex to work on your system:
 
 ```bash
 sudo chown -R `whoami`:admin /usr/local/bin
 ~/Library/TinyTeX/bin/x86_64-darwin/tlmgr path add
 ```
 
-For all users, in order to install these packages on your system, just source in the `check_packages.R` script included in this repository. 
+For all users, in order to install these packages on your system, just source in the `check_packages.R` script included in this repository.
 
 ## Reading and Writing Data Assignment
 
@@ -122,7 +123,7 @@ You will need to write code in the `read_raw_data.R` script that reads in the fi
 
 #### Reading in the IPUMS Data
 
-The IPUMS data is in fixed-width format. The codebook should provide you with the information you need to determine the widths necessary to read in the data. I would strongly recommend using the `read_fwf` function in the `readr` library rather than the `read.fwf` function in base R, because it `read_fwf` is much faster. The `read_fwf` function can also directly read a g-zipped file whereas the `read.fwf` will require you to access your g-zipped file with the command  `gzfile("input/name_of_data.dat.gz", open="r")`.
+The IPUMS data is in fixed-width format. The codebook should provide you with the information you need to determine the widths necessary to read in the data. We will use the `read_fwf` function in the `readr` library rather than the `read.fwf` function in base R, because `read_fwf` is much faster and allows us to directly read a g-zipped file.
 
 Note that all of the IPUMS variables are coded as numeric values. You need to use the codebook to see which categories these numbers correspond to in cases of categorical variables. There is no need to recode them as factors for this assignment as we will create our own categorical variables in the next assignment.
 
@@ -181,21 +182,9 @@ Once you have the data aggregated to the metro area, construct the following fou
 
 Once you are satisfied with these four variables, you should drop all of the other variables in your dataset except for `met2013`. If you want a challenge, you can try to figure out how to get `met_name` back in your metro-area dataset. You do not need to save this dataset to the filesystem as we will continue to work on it in this same script in the next assignment.
 
-## Programming Assignment
+## Reshaping and Merging Data Assignment
 
-For this assignment, you will calculate a measure of segregation called the Dissimilarity Index or *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
-
-The PDF document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
-
-For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
-
-- Create a calculateDissimilarity function that when given a dataset of tracts, will compute the dissimilarity index and return the results.
-- A for-loop or `lappy` command that uses the function above to actually calculate dissimilarity for each city.
-- Create a dataframe of dissimilarity indices rom the results of your for-loop. This dataset should have two variables: (1) `met2013` to identify metropolitan areas, (2) `D` for the actual dissimilarity index in each metropolitan area.
-
-## Combining and Merging Data Assignment
-
-For this assignment, we will combine all the pieces we have been working on so far into a single analytical dataset. 
+For this assignment, we will combine all the pieces we have been working on so far to create a single dataset.
 
 ### Creating aggregate IPUMS data
 
@@ -206,23 +195,30 @@ Our first step is to aggregate the individual level IPUMS data to the metro-area
 - `black_n`: the number of black respondents in the sample for the given metro area.
 - `white_n`: the number of white respondents in the sample for the given metro area.
 
-There are multiple ways you could go about this aggregation. It will most likely involve using the `aggregate` command, and then subsetting results, before merging them back together again. This code should be placed under the "Organize IPUMS data" section of `organize_data.R`. 
+In order to do this, you will need to use the `aggregate` command to aggregate to the metro area and then `dcast` and `merge` to reshape datasets and merge them. This code should be placed under the "Organize IPUMS data" section of `organize_data.R`.
 
-### Merging everything together 
+### Merging with aggregated tract level data
 
-In the "Merge data" section of `organize_data.R`, you can now merge the three pieces of data that you have into a single analytical dataset. The three sepaerate pieces of data are:
-
-1. The data aggregated up from the IPUMS that gives the black/white SEI differences and the number of white and black respondents by metro area. 
-2. The tract-level data aggregated up to the metropolitan area that gives demographic characteristics like the percent black, unemployment rates, etc.
-3. The dissimilarity index dataset from the programming assignment that contains the dissimilarity index by metropolitan area.
-
-All three of these datasets should have a `met2013` id that can be used to merge them together. 
+The second step is to merge that with the metro-level data you aggregated from the tract data in the previous assignment. This will give you a combined dataset.
 
 You should note that these Social Explorer and IPUMS datasets do not contain the same number of observations at the metropolitan level. The IPUMS data has far fewer metro areas because only very large metro areas were identified in the individual-level data. There are also a couple of cases where the IPUMS data does not have a corresponding metro area from the tract data due to some discrepancies in identification between the two data sources. Your final dataset should contain only metro areas that had valid observations in both datasets.
 
 Furthermore, some metro areas had very small samples of either white or black respondents. In these cases, there is likely to be a lot of statistical noise in our estimation of the SEI differences. To address this problem, I want you to remove all metro areas that had fewer than 50 black or white respondents. This is crude but fairly effective. We will learn a better way to handle this kind of issue next term (spoiler: multilevel models).
 
-The final combined dataset should be named `met_area`. You should save this as `met_area.RData` in the `output` directory. We are now done with the `organize_data.R` script. 
+## Programming Assignment
+
+For this assignment, you will calculate a measure of segregation called the Dissimilarity Index or *D* for short. The dissimilarity index compares the distribution of two groups across neighborhoods (typically operationalized as census tracts) within a city. If those two distributions are identical, then the dissimilarity index is 0. If the two groups never occupy the same neighborhoods, then you have a dissimilarity index of 100 and complete segregation. The dissimilarity index also has a very intuitive interpretation: *D* is the percent of either group that would have to move to different neighborhoods in order to create even distributions (i.e. no segregation).
+
+The PDF document in this repository entitled "calculate_dissimilarity.pdf" gives the technical details of how *D* is calculated.
+
+For this assignment, I want you to calculate *D* for each metropolitan area. You will need to use the tract-level dataset to calculate this measure. You should write this code in the `organize_data.R` script under the "Calculate Dissimilarity Index" section. You must do the following:
+
+- Create a calculateDissimilarity function that when given a dataset of tracts, will compute the dissimilarity index and return the results.
+- A for-loop or `lappy` command that uses the function above to actually calculate dissimilarity for each city.
+- Create a data.frame of dissimilarity indices rom the results of your for-loop. This dataset should have two variables: (1) `met2013` to identify metropolitan areas, (2) `D` for the actual dissimilarity index in each metropolitan area.
+- Merge this new data.frame with the combined data.frame you constructed in the previous assignment.
+
+You should now have a final analytical dataset. it should be named `met_area`. You should save this as `met_area.RData` in the `output` directory. We are now done with the `organize_data.R` script.
 
 ## R Markdown Assignment
 

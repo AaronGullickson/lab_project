@@ -14,9 +14,12 @@ source("read_raw_data.R")
 
 #check yourself before you wreck yourself
 
-#Now calculate the difference in white-black mean SEI by metro area. Also count
-#the number of black and white respondents by metro area. Put all of these
-#variables into a new data.frame.
+#Aggregate mean SEI for each metro area and calculate the difference 
+#in white-black mean SEI by metro area. 
+
+#Count the number of black and white respondents by metro area
+
+#Put aggregated metro area variables into a new data.frame.
 
 
 # Organize tract data -----------------------------------------------------
@@ -30,15 +33,16 @@ source("read_raw_data.R")
 
 # Calculate Dissimilarity Index -------------------------------------------
 
-#create a function that will calculate black/white dissimiliarity from a set of
-#tracts
+#create a function that will calculate black/white dissimiliarity from a 
+#set of tracts
 calculateDissimilarity <- function(city) {
   #your function here
 }
 
 #for-loop or lapply through each metro area and calculate dissimilarity
 
-#put results in a data.frame
+#put results in a data.frame and merge this data.frame with combined 
+#data.frame
 
 
 # Merge data --------------------------------------------------------------
