@@ -10,9 +10,17 @@ library(readr)
 # IPUMS Data --------------------------------------------------------------
 
 #read in the IPUMS fixed-width data from gzip file.
+mydata <- read_fwf("0001_census.data.gz",
+           col_positions = fwf_positions(start=c(1, 5, 11, 19, 32, 55, 60, 72, 73, 77, 87, 88, 91, 92, 95),
+                                         end=c(4, 10, 18, 31, 41, 59, 71, 72, 76, 86, 87, 90, 91, 94, 96),
+                                         col_names =c("year","SAMPLE","serial","cbserial","hhwt","met2013",
+                                                      "strata","gq","PERNUM","perwt","race","raced","hispan",
+                                                      "hispand","Sei")),
+          col_types = cols(.default = "i"), #ensure that all variables are read in as integers
+          progress = TRUE)
 
 #drop cases that are missing on met2013 or SEI (i.e. have a zero value)
-
+mydata <- subset(mydata, met2013>0 | sei>0)
 
 # Tract Data --------------------------------------------------------------
 
