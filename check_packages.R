@@ -6,19 +6,31 @@ if(!require("readr")) {
   library(readr)
 }
 
+if(!require("reshape2")) {
+  install.packages("reshape2")
+  library(reshape2)
+}
+
 if(!require("rmarkdown")) {
   install.packages("rmarkdown")
   library(rmarkdown)
 }
 
 if(!require("texreg")) {
-  install.packages("texreg")
+  install.packages("devtools")
+  library(devtools)
+  install_github("leifeld/texreg")
   library(texreg)
 }
 
 if(!require("tinytex")) {
   install.packages("tinytex")
   library(tinytex)
+}
+
+if(!require("ggplot2")) {
+  install.packages("ggplot2")
+  library(ggplot2)
 }
 
 #install tiny tex if not found

@@ -7,11 +7,8 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 load("output/met_area.RData")
-#check for texreg package
-if(!require("texreg")) {
-  install.packages("texreg")
-  library(texreg)
-}
+library(ggplot2)
+library(texreg)
 ```
 
 ## Introduction
@@ -39,16 +36,15 @@ model2 <- lm()
 model3 <- lm()
 
 #to print to screen replace texreg with screenreg
-texreg(list(model1, model2, model3),
-       caption="Your caption here",
-       #custom.coef.names = c("Covariate labels here"), #uncomment to add nice labels to independent variables
-       digits = 3,
-       caption.above=TRUE, 
-       include.rsquared=TRUE,
-       include.adjrs=FALSE,
-       include.nobs=TRUE,
-       include.rmse=FALSE,
-       custom.note ="%stars.\nNotes: Some notes.")
+knitreg(list(model1, model2, model3),
+        caption="Your caption here",
+        #custom.coef.names = c("Covariate labels here"), #uncomment to add nice labels to independent variables
+        digits = 3,
+        caption.above=TRUE, 
+        include.rsquared=TRUE,
+        include.adjrs=FALSE,
+        include.nobs=TRUE,
+        include.rmse=FALSE)
 ```
 
 ## Conclusions
